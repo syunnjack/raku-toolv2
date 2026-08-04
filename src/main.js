@@ -19,7 +19,7 @@ function escapeHtml(value = '') { const el = document.createElement('span'); el.
 function render() {
   app.innerHTML = `
     <header class="masthead">
-      <a class="brand" href="#">RAKU <i>ATLAS</i></a>
+      <a class="brand" href="#">えらび<i>より</i></a>
       <span class="issue">OFFICIAL API WORKBENCH · 2026</span>
       <a class="docs-link" href="https://webservice.rakuten.co.jp/documentation" target="_blank" rel="noreferrer">API仕様 ↗</a>
     </header>
@@ -56,7 +56,7 @@ function render() {
       <section class="catalog"><p class="section-label">05 / FULL AFFILIATE MAP</p><h2>楽天アフィリエイト対象サービス</h2><p class="catalog-note">公式APIで検索できないサービスも含みます。APIなしのサービスは楽天公式のリンク作成画面を利用してください。対象・料率は変わるため公開前に公式確認が必要です。</p><div class="catalog-grid">${AFFILIATE_CATALOG.map(([group, names]) => `<article><h3>${group}</h3>${names.map((name) => `<span>${name}</span>`).join('')}</article>`).join('')}</div><a class="official" href="https://affiliate.rakuten.co.jp/group/" target="_blank" rel="noreferrer">楽天公式の対象サービス一覧で確認 ↗</a></section>
       <section class="community"><div class="section-head"><div><p class="section-label">06 / COMMUNITY NOTES</p><h2>利用者の実体験</h2></div><span>${state.reviews.length} PUBLISHED</span></div><p class="catalog-note">投稿は公開前に管理者が確認します。価格や成果条件の確認には公式ページを優先してください。</p>${community.configured ? `<form id="review-form"><select name="service">${API_SERVICES.map((service) => `<option>${service.name}</option>`)}</select><input name="title" maxlength="80" placeholder="体験の見出し" required><select name="rating"><option value="5">★5</option><option value="4">★4</option><option value="3">★3</option><option value="2">★2</option><option value="1">★1</option></select><textarea name="body" minlength="30" maxlength="1200" placeholder="比較条件、良かった点、注意点を具体的に（30文字以上）" required></textarea><button>審査へ投稿</button></form>` : '<p class="ugc-offline">UGC投稿は未接続です。Supabase URL・Anon KeyとRLSを設定すると有効になります。</p>'}<p id="review-status" role="status"></p><div class="review-grid">${state.reviews.map((review) => `<article><p>${'★'.repeat(review.rating)}</p><h3>${escapeHtml(review.title)}</h3><span>${escapeHtml(review.service)} · ${escapeHtml(review.created_at.slice(0,10))}</span><p>${escapeHtml(review.body)}</p></article>`).join('') || '<p class="empty">公開済みレビューはまだありません。</p>'}</div></section>
     </main>
-    <footer><strong>RAKU ATLAS</strong><p>成果・報酬を保証しません。自己購入、不正誘導、条件の誤表示を行わず、楽天の最新規約を確認してください。</p></footer>`
+    <footer><strong>えらびより</strong><p>楽天株式会社の公式サイトではありません。成果・報酬を保証しません。自己購入、不正誘導、条件の誤表示を行わず、楽天の最新規約を確認してください。</p></footer>`
   bind()
 }
 
