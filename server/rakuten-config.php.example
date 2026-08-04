@@ -1,0 +1,6 @@
+<?php
+return [
+    'application_id' => 'YOUR_RAKUTEN_APPLICATION_ID',
+    'access_key' => 'YOUR_RAKUTEN_ACCESS_KEY',
+    'affiliate_id' => 'YOUR_RAKUTEN_AFFILIATE_ID',
+];
