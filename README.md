@@ -15,7 +15,7 @@
 
 ## 認証情報
 
-楽天Web Serviceで発行されたApplication IDとAccess Keyが必要です。Affiliate IDはAPIが返すアフィリエイトURLへ反映するために使用します。入力値は永続保存しません。ただしブラウザからAPIへ直接送信する構成のため、公開端末では入力しないでください。本番運用でAccess Keyを秘匿する場合は、許可Origin・レート制限を備えたバックエンドプロキシが必要です。
+楽天Web Serviceで発行されたApplication ID、Access Key、Affiliate IDをXサーバーの公開ディレクトリ外に保存します。ブラウザは同一ドメインの`/api/rakuten.php`だけを呼び、Access Keyを受け取りません。配置方法は`server/README.md`を参照してください。
 
 ## コマンド
 
