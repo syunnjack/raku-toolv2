@@ -1,13 +1,12 @@
 import './style.css'
 import './community.css'
-import { AFFILIATE_CATALOG, API_SERVICES, buildApiUrl, buildDisclosure, normalizeItems } from './services.js'
+import { AFFILIATE_CATALOG, API_SERVICES, buildDisclosure, buildProxyUrl, normalizeItems } from './services.js'
 import { createCommunityClient, validateReview } from './community.js'
 
 const community = createCommunityClient({ url: import.meta.env.VITE_SUPABASE_URL, anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY })
 
 const state = {
   active: API_SERVICES[0], results: [], saved: JSON.parse(localStorage.getItem('raku-v2.saved') || '[]'),
-  credentials: { applicationId: '', accessKey: '', affiliateId: '' },
   reviews: [],
 }
 
@@ -29,15 +28,7 @@ function render() {
         <aside class="fact"><strong>6</strong><span>APIサービス群</span><p>アフィリエイト対応APIと、コンテンツ企画用APIを明示して分離。</p></aside>
       </section>
 
-      <section class="credentials">
-        <div><p class="section-label">01 / CONNECTION</p><h2>楽天Web Service 認証</h2><p>資格情報は送信時だけ使用し、ブラウザ保存しません。</p></div>
-        <form id="credentials-form">
-          <label>Application ID<input name="applicationId" value="${escapeHtml(state.credentials.applicationId)}" required></label>
-          <label>Access Key<input name="accessKey" type="password" value="${escapeHtml(state.credentials.accessKey)}" required></label>
-          <label>Affiliate ID<input name="affiliateId" value="${escapeHtml(state.credentials.affiliateId)}" placeholder="任意（リンク生成に使用）"></label>
-          <button>このタブで使用</button>
-        </form>
-      </section>
+      <section class="credentials"><div><p class="section-label">01 / CONNECTION</p><h2>Xサーバー安全接続</h2><p>楽天APIの認証情報はXサーバー側だけで保持します。ブラウザやGitHubへAccess Keyを配信しません。</p></div><div class="server-status"><strong>SERVER-SIDE PROXY</strong><span>/api/rakuten.php</span><p>接続確認は検索時に行います。</p></div></section>
 
       <nav class="service-tabs" aria-label="APIサービス">
         ${API_SERVICES.map((service) => `<button data-service="${service.id}" class="${service.id === state.active.id ? 'active' : ''}" style="--accent:${service.color}"><small>${service.eyebrow}</small>${service.name}<b>${service.affiliate ? 'AFFILIATE API' : '企画支援・非アフィリエイトAPI'}</b></button>`).join('')}
@@ -65,7 +56,6 @@ function card(item) {
 }
 
 function bind() {
-  document.querySelector('#credentials-form').addEventListener('submit', (event) => { event.preventDefault(); state.credentials = Object.fromEntries(new FormData(event.currentTarget)); document.querySelector('#status').textContent = 'このタブで認証情報を使用します。ブラウザには保存しません。' })
   document.querySelectorAll('[data-service]').forEach((button) => button.addEventListener('click', () => { state.active = API_SERVICES.find((service) => service.id === button.dataset.service); state.results = []; render() }))
   document.querySelector('#search-form').addEventListener('submit', search)
   document.querySelectorAll('[data-save]').forEach((button) => button.addEventListener('click', () => { const item = state.results.find((result) => String(result.id) === button.dataset.save); if (!state.saved.some((saved) => String(saved.id) === String(item.id))) state.saved.unshift({ ...item, serviceName: state.active.name }); persist(); render() }))
@@ -75,11 +65,10 @@ function bind() {
 
 async function search(event) {
   event.preventDefault(); const status = document.querySelector('#status')
-  if (!state.credentials.applicationId || !state.credentials.accessKey) { status.textContent = 'Application IDとAccess Keyを設定してください。'; return }
   const query = new FormData(event.currentTarget).get('query') || ''
   status.textContent = '公式APIへ問い合わせ中…'
   try {
-    const response = await fetch(buildApiUrl(state.active, state.credentials, query), { headers: { accessKey: state.credentials.accessKey } })
+    const response = await fetch(buildProxyUrl(state.active, query))
     const payload = await response.json()
     if (!response.ok || payload.error) throw new Error(payload.error_description || `HTTP ${response.status}`)
     state.results = normalizeItems(state.active.id, payload); render(); document.querySelector('#status').textContent = `${state.results.length}件取得しました。`
