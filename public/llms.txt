@@ -1,0 +1,19 @@
+# Raku Atlas
+
+> 楽天Web Serviceの公式APIを横断検索し、アフィリエイト候補とユーザー投稿を整理する編集支援サイトです。楽天株式会社の公式サービスではありません。
+
+## Capabilities
+- 楽天市場、楽天トラベル、楽天ブックス、楽天Kobo、楽天GORAのアフィリエイト対応API検索
+- 楽天レシピAPIを使ったコンテンツ企画支援（API自体はアフィリエイト非対応）
+- Supabase接続時のユーザーレビュー投稿・公開
+
+## Sources
+- https://webservice.rakuten.co.jp/documentation
+- https://affiliate.rakuten.co.jp/group/
+- https://affiliate.rakuten.co.jp/guideline/rule/
+
+## Limitations
+- 売上や成果報酬を保証しません。
+- 価格、空室、在庫、料率、成果条件は変動します。公式情報を優先してください。
+- 公開APIがない楽天サービスは自動取得しません。
+- ユーザー投稿は個人の体験であり、運営者や楽天の見解ではありません。
