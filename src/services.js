@@ -51,6 +51,13 @@ export function buildApiUrl(service, credentials, query) {
   return url
 }
 
+export function buildProxyUrl(service, query) {
+  const url = new URL('/api/rakuten.php', window.location.origin)
+  url.searchParams.set('service', service.id)
+  if (query) url.searchParams.set('q', query)
+  return url
+}
+
 export function normalizeItems(serviceId, payload) {
   const raw = payload.Items || payload.items || payload.hotels || payload.Hotels || payload.courses || []
   return raw.map((wrapper) => {
