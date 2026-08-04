@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { API_SERVICES, AFFILIATE_CATALOG, buildApiUrl, buildDisclosure, normalizeItems } from '../src/services.js'
+import { API_SERVICES, AFFILIATE_CATALOG, buildApiUrl, buildDisclosure, buildProxyUrl, normalizeItems } from '../src/services.js'
 import { createCommunityClient, validateReview } from '../src/community.js'
 
 test('公式APIサービス群を重複なく登録している', () => {
@@ -14,6 +14,15 @@ test('認証情報とaffiliateIdを対応API URLへ設定する', () => {
   assert.equal(url.searchParams.get('accessKey'), 'key')
   assert.equal(url.searchParams.get('affiliateId'), 'aff')
   assert.equal(url.searchParams.get('keyword'), '防災')
+})
+
+test('ブラウザは同一ドメインのXサーバープロキシだけを呼ぶ', () => {
+  global.window = { location: { origin: 'https://erabiyori.jp' } }
+  const url = buildProxyUrl(API_SERVICES[1], '温泉')
+  assert.equal(url.origin, 'https://erabiyori.jp')
+  assert.equal(url.pathname, '/api/rakuten.php')
+  assert.equal(url.searchParams.get('service'), 'travel')
+  delete global.window
 })
 
 test('商品とホテルのレスポンスを共通形式にする', () => {
