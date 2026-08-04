@@ -1,4 +1,4 @@
-# Raku Atlas / raku-toolv2
+# えらびより / Raku Atlas / raku-toolv2
 
 楽天Web Serviceの公式APIを横断して、紹介候補を検索・保存するアフィリエイト検証ツールです。
 
@@ -37,7 +37,7 @@ VITE_SUPABASE_ANON_KEY=YOUR_ANON_KEY
 
 大量アクセスに備えるには、CAPTCHA、IP/ユーザー単位のレート制限、管理者モデレーション画面、通報・削除窓口、CDNキャッシュが追加で必要です。現時点ではこれらを実装済みとは扱いません。
 
-`public/robots.txt`、`public/sitemap.xml`、`index.html`の`example.com`は取得した本番ドメインに置換してください。
+本番ドメインは `https://erabiyori.jp/` です。GitHub Pagesでは `public/CNAME` を利用します。
 
 ## 公式資料
 
