@@ -1,6 +1,8 @@
-# Raku Atlas
+# えらびより / Raku Atlas
 
 > 楽天Web Serviceの公式APIを横断検索し、アフィリエイト候補とユーザー投稿を整理する編集支援サイトです。楽天株式会社の公式サービスではありません。
+
+Canonical URL: https://erabiyori.jp/
 
 ## Capabilities
 - 楽天市場、楽天トラベル、楽天ブックス、楽天Kobo、楽天GORAのアフィリエイト対応API検索
