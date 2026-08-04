@@ -1,0 +1,16 @@
+{
+  "name": "raku-toolv2",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "node --test",
+    "lint": "oxlint"
+  },
+  "devDependencies": {
+    "oxlint": "^1.72.0",
+    "vite": "^8.1.3"
+  }
+}
