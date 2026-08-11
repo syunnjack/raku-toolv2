@@ -1,0 +1,42 @@
+name: Deploy to Xserver
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Deploy via rsync over SSH
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete --exclude=".git" --exclude=".github" --exclude="node_modules" --exclude="server" --exclude="test" --exclude="supabase"
+          path: ./
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: '10022'
+          remote_user: ${{ secrets.SSH_USERNAME }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy PHP proxy
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr
+          path: server/
+          remote_path: ${{ secrets.DEPLOY_PATH }}/api/
+          remote_host: ${{ secrets.SSH_HOST }}
+          remote_port: '10022'
+          remote_user: ${{ secrets.SSH_USERNAME }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
